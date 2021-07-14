@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.habitcreate.HabitCreateFragment">
+
+
+    <EditText
+        android:id="@+id/edit_text_habit_name"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:hint="@string/fragment_habit_create_habit_name"
+        app:layout_constraintLeft_toRightOf="@id/guideline_title"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_start_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.2" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.3" />
+
+    <TextView
+        android:id="@+id/start_time_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintTop_toTopOf="@id/date_picker"
+        app:layout_constraintBottom_toBottomOf="@id/date_picker"
+        app:layout_constraintRight_toLeftOf="@id/guideline_title"
+        android:text="@string/text_habit_create_start_time" />
+
+    <TextView
+        android:id="@+id/date_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/border_date_time_picker"
+        app:layout_constraintTop_toBottomOf="@id/guideline_start_time"
+        app:layout_constraintLeft_toRightOf="@id/guideline_title"
+        android:text="@string/text_habit_create_pick_date"
+        />
+
+    <TextView
+        android:id="@+id/time_picker"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_date_time_picker"
+        app:layout_constraintTop_toBottomOf="@id/guideline_start_time"
+        app:layout_constraintLeft_toRightOf="@id/date_picker"
+        android:text="@string/text_habit_create_pick_time"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintRight_toLeftOf="@id/guideline_title"
+        app:layout_constraintTop_toTopOf="@id/days_picker"
+        app:layout_constraintBottom_toBottomOf="@id/days_picker"
+        android:text="@string/text_habit_create_interval_title"/>
+
+    <NumberPicker
+        android:id="@+id/days_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        app:layout_constraintLeft_toRightOf="@id/guideline_title"
+        app:layout_constraintRight_toLeftOf="@id/days_desc"
+        app:layout_constraintTop_toBottomOf="@id/date_picker" />
+
+    <TextView
+        android:id="@+id/days_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_habit_create_days"
+        app:layout_constraintLeft_toRightOf="@id/days_picker"
+        app:layout_constraintRight_toLeftOf="@id/hours_picker"
+        app:layout_constraintTop_toTopOf="@id/days_picker"
+        app:layout_constraintBottom_toBottomOf="@id/days_picker" />
+
+    <NumberPicker
+        android:id="@+id/hours_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:descendantFocusability="blocksDescendants"
+        app:layout_constraintLeft_toRightOf="@id/days_desc"
+        app:layout_constraintRight_toLeftOf="@id/hours_desc"
+        app:layout_constraintTop_toTopOf="@id/days_picker" />
+
+    <TextView
+        android:id="@+id/hours_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_habit_create_hours"
+        app:layout_constraintLeft_toRightOf="@id/hours_picker"
+        app:layout_constraintRight_toLeftOf="@id/minutes_picker"
+        app:layout_constraintTop_toTopOf="@id/days_picker"
+        app:layout_constraintBottom_toBottomOf="@id/days_picker" />
+
+    <NumberPicker
+        android:id="@+id/minutes_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        app:layout_constraintLeft_toRightOf="@id/hours_desc"
+        app:layout_constraintRight_toLeftOf="@+id/minutes_desc"
+        app:layout_constraintTop_toTopOf="@id/days_picker"
+        app:layout_constraintBottom_toBottomOf="@id/days_picker" />
+
+    <TextView
+        android:id="@+id/minutes_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_habit_create_minutes"
+        app:layout_constraintLeft_toRightOf="@id/minutes_picker"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/days_picker"
+        app:layout_constraintBottom_toBottomOf="@id/days_picker" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        app:layout_constraintRight_toLeftOf="@id/guideline_title"
+        android:text="@string/text_habit_create_target_title"
+        app:layout_constraintTop_toTopOf="@id/target_count"
+        app:layout_constraintBottom_toBottomOf="@id/target_count"/>
+
+    <EditText
+        android:id="@+id/target_count"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/days_picker"
+        app:layout_constraintLeft_toRightOf="@id/guideline_title"
+        android:inputType="numberSigned"
+        android:text="20" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text="@string/text_habit_create_target_count_unit"
+        app:layout_constraintLeft_toRightOf="@id/target_count"
+        app:layout_constraintTop_toTopOf="@id/target_count"
+        app:layout_constraintBottom_toBottomOf="@id/target_count"/>
+
+    <Button
+        android:id="@+id/button_add"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="100dp"
+        android:text="@string/button_habit_create_add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

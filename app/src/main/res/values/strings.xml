@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">HabitTracker</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="habit_list_fragment_label">Habit List Fragment</string>
+    <string name="habit_create_fragment_label">Habit Create Fragment</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="fragment_habit_create_habit_name">習慣名稱</string>
+    <string name="text_habit_create_hours">時</string>
+    <string name="text_habit_create_days">天</string>
+    <string name="text_habit_create_minutes">分</string>
+    <string name="button_habit_create_add">新增</string>
+    <string name="text_habit_create_start_time">起始時間</string>
+    <string name="text_habit_create_pick_date">選擇日期</string>
+    <string name="text_habit_create_pick_time">選擇時間</string>
+    <string name="text_habit_create_interval_title">週期</string>
+    <string name="text_habit_create_target_title">目標次數</string>
+    <string name="text_habit_create_target_count_unit">次</string>
+    <string name="text_habit_page_complete_desc">你已經完成 %1$d 次</string>
+    <string name="text_habit_page_target_desc">距離目標只剩 %1$d 次了</string>
+    <string name="text_habit_page_complete">完成一次</string>
+    <string name="dialog_habit_create_complete_field">有欄位未填寫</string>
+    <string name="dialog_habit_create_keep_complete">繼續填寫</string>
+
+</resources>
