@@ -1,7 +1,6 @@
 package com.paulwu.habittracker.ui.habitcreate
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.paulwu.habittracker.dao.HabitDao
 import com.paulwu.habittracker.model.Habit
@@ -10,7 +9,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class HabitCreateViewModel @Inject constructor(private val habitDao: HabitDao, application: Application): AndroidViewModel(application) {
+class HabitCreateViewModel @Inject constructor(private val habitDao: HabitDao): ViewModel() {
     val habitSetting: HabitSetting = HabitSetting.empty()
 
     fun add(habitSetting: HabitSetting) {
