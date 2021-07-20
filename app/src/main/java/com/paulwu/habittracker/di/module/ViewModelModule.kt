@@ -6,6 +6,7 @@ import com.paulwu.habittracker.ViewModelFactory
 import com.paulwu.habittracker.di.key.ViewModelKey
 import com.paulwu.habittracker.ui.habitcreate.HabitCreateViewModel
 import com.paulwu.habittracker.ui.habitlist.HabitListViewModel
+import com.paulwu.habittracker.ui.habitpage.HabitPageViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -19,11 +20,16 @@ abstract class ViewModelModule {
     @IntoMap
     @Binds
     @ViewModelKey(HabitListViewModel::class)
-    abstract fun bindHomeFragmentViewModel(viewModel: HabitListViewModel): ViewModel
+    abstract fun bindHabitListViewModel(viewModel: HabitListViewModel): ViewModel
 
     @IntoMap
     @Binds
     @ViewModelKey(HabitCreateViewModel::class)
-    abstract fun bindForecastFragmentViewModel(viewModel: HabitCreateViewModel): ViewModel
+    abstract fun bindHabitCreateViewModel(viewModel: HabitCreateViewModel): ViewModel
+
+    @IntoMap
+    @Binds
+    @ViewModelKey(HabitPageViewModel::class)
+    abstract fun bindHabitPageViewModel(viewModel: HabitPageViewModel): ViewModel
 
 }

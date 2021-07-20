@@ -1,11 +1,8 @@
 package com.paulwu.habittracker.ui.habitpage
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.Room
-import com.paulwu.habittracker.dao.AppDatabase
 import com.paulwu.habittracker.dao.CompleteRecordDao
 import com.paulwu.habittracker.dao.HabitDao
 import com.paulwu.habittracker.model.CompleteRecord
@@ -15,12 +12,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.Instant
+import javax.inject.Inject
 
-class HabitPageViewModel(application: Application, private val id: Int) :
-    AndroidViewModel(application) {
-    private lateinit var completeRecordDao: CompleteRecordDao
-
-    private lateinit var habitDao: HabitDao
+class HabitPageViewModel @Inject constructor(
+    private val habitDao: HabitDao,
+    private val completeRecordDao: CompleteRecordDao
+) : ViewModel() {
     private var completeRecordListData: MutableList<CompleteRecord> = mutableListOf()
 
     private lateinit var habit: Habit
@@ -29,30 +26,21 @@ class HabitPageViewModel(application: Application, private val id: Int) :
         MutableLiveData()
     }
 
-    init {
-        initDatabase(application)
-    }
 
-    private fun initDatabase(application: Application) {
+    fun init(habitId: Int) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                val database = Room.databaseBuilder(
-                    application.applicationContext,
-                    AppDatabase::class.java, "habit"
-                ).build()
-                habitDao = database.habitDao()
-                completeRecordDao = database.completeRecordDao()
-                habit = habitDao.get(id)
+                habit = habitDao.get(habitId)
             }
 
-            completeRecordDao.getAll().observeForever {
-                completeRecordList ->
+            completeRecordDao.getAll().observeForever { completeRecordList ->
                 completeRecordListData = completeRecordList.toMutableList()
                 val completeTimes = completeRecordListData.count { it.habitId == habit.id }
                 val dateNow = Instant.now()
                 val canComplete = if (completeTimes == 0)
                     habit.startTime.plus(habit.frequency).isBefore(dateNow) else
-                    completeRecordListData.last { it.habitId == habit.id }.completeTime.plus(habit.frequency).isBefore(dateNow)
+                    completeRecordListData.last { it.habitId == habit.id }.completeTime.plus(habit.frequency)
+                        .isBefore(dateNow)
 
                 displayHabit.value?.completeTimes = completeTimes
                 displayHabit.value?.canComplete = canComplete
@@ -65,6 +53,7 @@ class HabitPageViewModel(application: Application, private val id: Int) :
                 )
             }
         }
+
     }
 
     fun complete(id: Int) {
@@ -75,5 +64,4 @@ class HabitPageViewModel(application: Application, private val id: Int) :
             }
         }
     }
-
 }

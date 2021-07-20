@@ -6,15 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import com.paulwu.habittracker.R
 import com.paulwu.habittracker.databinding.FragmentHabitPageBinding
+import com.paulwu.habittracker.di.Injectable
 import com.paulwu.habittracker.model.DisplayHabit
+import javax.inject.Inject
 
-class HabitPageFragment(private val habit: DisplayHabit) : Fragment() {
-
-    private val viewModel: HabitPageViewModel by viewModels {
-        HabitPageViewModelFactory(requireActivity().application, habit.id)
+class HabitPageFragment() : Fragment(), Injectable {
+    companion object {
+        const val ARG_HABIT_ID = "habitid"
     }
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val viewModel: HabitPageViewModel by viewModels { viewModelFactory }
 
     private lateinit var binding: FragmentHabitPageBinding
 
@@ -29,15 +35,27 @@ class HabitPageFragment(private val habit: DisplayHabit) : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        setHabitInfo(habit)
+//        setHabitInfo(habit)
+        arguments?.takeIf { it.containsKey(ARG_HABIT_ID) }?.apply {
+            val habitId = getInt(ARG_HABIT_ID)
+            viewModel.init(habitId)
 
-        viewModel.displayHabit.observe(viewLifecycleOwner) { habit ->
-            setHabitInfo(habit)
+            viewModel.displayHabit.observe(viewLifecycleOwner) { habit ->
+                setHabitInfo(habit)
+            }
+
+            binding.buttonComplete.setOnClickListener {
+                viewModel.complete(habitId)
+            }
         }
 
-        binding.buttonComplete.setOnClickListener {
-            viewModel.complete(habit.id)
-        }
+//        viewModel.displayHabit.observe(viewLifecycleOwner) { habit ->
+//            setHabitInfo(habit)
+//        }
+//
+//        binding.buttonComplete.setOnClickListener {
+//            viewModel.complete(habit.id)
+//        }
     }
 
     private fun setHabitInfo(habit: DisplayHabit) {

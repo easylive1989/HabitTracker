@@ -23,12 +23,11 @@ class HabitListViewModel @Inject constructor(
     }
 
     init {
-        habitDao.getAll().observeForever { habitList ->
-            habitListData = habitList.toMutableList()
-            displayHabitList.value = getDisplayHabitList()
-        }
         completeRecordDao.getAll().observeForever { completeRecordList ->
             completeRecordListData = completeRecordList.toMutableList()
+        }
+        habitDao.getAll().observeForever { habitList ->
+            habitListData = habitList.toMutableList()
             displayHabitList.value = getDisplayHabitList()
         }
     }
