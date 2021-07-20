@@ -11,6 +11,7 @@ import com.paulwu.habittracker.R
 import com.paulwu.habittracker.databinding.FragmentHabitPageBinding
 import com.paulwu.habittracker.di.Injectable
 import com.paulwu.habittracker.model.DisplayHabit
+import java.time.Instant
 import javax.inject.Inject
 
 class HabitPageFragment() : Fragment(), Injectable {
@@ -44,7 +45,7 @@ class HabitPageFragment() : Fragment(), Injectable {
             }
 
             binding.buttonComplete.setOnClickListener {
-                viewModel.complete(habitId)
+                viewModel.complete(habitId, Instant.now())
             }
         }
     }
