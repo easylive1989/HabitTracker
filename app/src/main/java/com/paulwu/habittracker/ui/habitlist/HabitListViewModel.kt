@@ -1,10 +1,7 @@
 package com.paulwu.habittracker.ui.habitlist
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import com.paulwu.habittracker.dao.CompleteRecordDao
 import com.paulwu.habittracker.dao.HabitDao
 import com.paulwu.habittracker.model.CompleteRecord
@@ -14,43 +11,26 @@ import java.time.Instant
 import javax.inject.Inject
 
 class HabitListViewModel @Inject constructor(
-    private val habitDao: HabitDao,
-    private val completeRecordDao: CompleteRecordDao,
-    application: Application
-) : AndroidViewModel(application) {
+    habitDao: HabitDao,
+    completeRecordDao: CompleteRecordDao,
+) : ViewModel() {
 
-    private lateinit var habitLiveData: LiveData<List<Habit>>
-    private lateinit var completeRecordLiveData: LiveData<List<CompleteRecord>>
     private var habitListData: MutableList<Habit> = mutableListOf()
     private var completeRecordListData: MutableList<CompleteRecord> = mutableListOf()
-
-    private val habitObserver = Observer<List<Habit>> { habitList ->
-        habitListData = habitList.toMutableList()
-        displayHabitList.value = getDisplayHabitList()
-    }
-
-    private val completeRecordObserver = Observer<List<CompleteRecord>> { completeRecordList ->
-        completeRecordListData = completeRecordList.toMutableList()
-        displayHabitList.value = getDisplayHabitList()
-    }
 
     val displayHabitList: MutableLiveData<List<DisplayHabit>> by lazy {
         MutableLiveData()
     }
 
     init {
-        initDatabase(application)
-    }
-
-    private fun initDatabase(application: Application) {
-//        viewModelScope.launch {
-            habitLiveData = habitDao.getAll()
-            completeRecordLiveData = completeRecordDao.getAll()
-
-            habitLiveData.observeForever(habitObserver)
-            completeRecordLiveData.observeForever(completeRecordObserver)
-
-//        }
+        habitDao.getAll().observeForever { habitList ->
+            habitListData = habitList.toMutableList()
+            displayHabitList.value = getDisplayHabitList()
+        }
+        completeRecordDao.getAll().observeForever { completeRecordList ->
+            completeRecordListData = completeRecordList.toMutableList()
+            displayHabitList.value = getDisplayHabitList()
+        }
     }
 
 
@@ -70,11 +50,5 @@ class HabitListViewModel @Inject constructor(
                 canComplete,
             )
         }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        habitLiveData.removeObserver(habitObserver)
-        completeRecordLiveData.removeObserver(completeRecordObserver)
     }
 }
