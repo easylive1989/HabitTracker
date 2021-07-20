@@ -15,8 +15,8 @@ class HabitListViewModel @Inject constructor(
     completeRecordDao: CompleteRecordDao,
 ) : ViewModel() {
 
-    private var habitListData: MutableList<Habit> = mutableListOf()
-    private var completeRecordListData: MutableList<CompleteRecord> = mutableListOf()
+    private var habitList: MutableList<Habit> = mutableListOf()
+    private var completeRecordList: MutableList<CompleteRecord> = mutableListOf()
 
     val displayHabitList: MutableLiveData<List<DisplayHabit>> by lazy {
         MutableLiveData()
@@ -24,22 +24,22 @@ class HabitListViewModel @Inject constructor(
 
     init {
         completeRecordDao.getAll().observeForever { completeRecordList ->
-            completeRecordListData = completeRecordList.toMutableList()
+            this.completeRecordList = completeRecordList.toMutableList()
         }
         habitDao.getAll().observeForever { habitList ->
-            habitListData = habitList.toMutableList()
+            this.habitList = habitList.toMutableList()
             displayHabitList.value = getDisplayHabitList()
         }
     }
 
 
     private fun getDisplayHabitList(): List<DisplayHabit> {
-        return habitListData.map { habit ->
-            val completeTimes = completeRecordListData.count { it.habitId == habit.id }
+        return habitList.map { habit ->
+            val completeTimes = completeRecordList.count { it.habitId == habit.id }
             val dateNow = Instant.now()
             val canComplete = if (completeTimes == 0)
                 habit.startTime.plus(habit.frequency).isBefore(dateNow) else
-                completeRecordListData.last { it.habitId == habit.id }.completeTime.plus(habit.frequency)
+                completeRecordList.last { it.habitId == habit.id }.completeTime.plus(habit.frequency)
                     .isBefore(dateNow)
             DisplayHabit(
                 habit.id,

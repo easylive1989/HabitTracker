@@ -35,7 +35,6 @@ class HabitPageFragment() : Fragment(), Injectable {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        setHabitInfo(habit)
         arguments?.takeIf { it.containsKey(ARG_HABIT_ID) }?.apply {
             val habitId = getInt(ARG_HABIT_ID)
             viewModel.init(habitId)
@@ -48,14 +47,6 @@ class HabitPageFragment() : Fragment(), Injectable {
                 viewModel.complete(habitId)
             }
         }
-
-//        viewModel.displayHabit.observe(viewLifecycleOwner) { habit ->
-//            setHabitInfo(habit)
-//        }
-//
-//        binding.buttonComplete.setOnClickListener {
-//            viewModel.complete(habit.id)
-//        }
     }
 
     private fun setHabitInfo(habit: DisplayHabit) {

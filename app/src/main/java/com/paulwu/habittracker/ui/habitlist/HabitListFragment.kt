@@ -26,7 +26,7 @@ class HabitListFragment : Fragment(), Injectable {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentHabitListBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -34,8 +34,8 @@ class HabitListFragment : Fragment(), Injectable {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.fab.setOnClickListener { view ->
-            view.findNavController().navigate(R.id.action_HabitListFragment_to_HabitCreateFragment)
+        binding.fab.setOnClickListener { fab ->
+            fab.findNavController().navigate(R.id.action_HabitListFragment_to_HabitCreateFragment)
         }
 
         viewModel.displayHabitList.observe(viewLifecycleOwner) { habitList ->

@@ -14,8 +14,6 @@ class HabitPagerAdapter(fragmentManager: FragmentManager, lifeCycle: Lifecycle, 
     }
 
     override fun createFragment(position: Int): Fragment {
-
-//        val habitPageFragment = HabitPageFragment(habitList[position])
         val habitPageFragment = HabitPageFragment()
         habitPageFragment.arguments = Bundle().apply {
             putInt(HabitPageFragment.ARG_HABIT_ID, habitList[position].id)

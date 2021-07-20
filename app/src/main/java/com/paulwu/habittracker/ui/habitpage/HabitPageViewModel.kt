@@ -18,7 +18,7 @@ class HabitPageViewModel @Inject constructor(
     private val habitDao: HabitDao,
     private val completeRecordDao: CompleteRecordDao
 ) : ViewModel() {
-    private var completeRecordListData: MutableList<CompleteRecord> = mutableListOf()
+    private var completeRecordList: MutableList<CompleteRecord> = mutableListOf()
 
     private lateinit var habit: Habit
 
@@ -34,12 +34,12 @@ class HabitPageViewModel @Inject constructor(
             }
 
             completeRecordDao.getAll().observeForever { completeRecordList ->
-                completeRecordListData = completeRecordList.toMutableList()
-                val completeTimes = completeRecordListData.count { it.habitId == habit.id }
+                this@HabitPageViewModel.completeRecordList = completeRecordList.toMutableList()
+                val completeTimes = this@HabitPageViewModel.completeRecordList.count { it.habitId == habit.id }
                 val dateNow = Instant.now()
                 val canComplete = if (completeTimes == 0)
                     habit.startTime.plus(habit.frequency).isBefore(dateNow) else
-                    completeRecordListData.last { it.habitId == habit.id }.completeTime.plus(habit.frequency)
+                    this@HabitPageViewModel.completeRecordList.last { it.habitId == habit.id }.completeTime.plus(habit.frequency)
                         .isBefore(dateNow)
 
                 displayHabit.value?.completeTimes = completeTimes

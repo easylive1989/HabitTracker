@@ -22,6 +22,10 @@ import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 class HabitCreateFragment : Fragment(), Injectable {
+    companion object {
+        const val TAG_DATE_PICKER = "date_picker"
+        const val TAG_TIME_PICKER = "time_picker"
+    }
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -44,14 +48,14 @@ class HabitCreateFragment : Fragment(), Injectable {
         binding.datePicker.setOnClickListener {
             DatePickerFragment { _, year, month, day ->
                 setStartDate(LocalDate.of(year, month, day))
-            }.show(childFragmentManager, "Date Picker")
+            }.show(childFragmentManager, TAG_DATE_PICKER)
         }
 
         setStartTime(LocalTime.now().withSecond(0).withNano(0))
         binding.timePicker.setOnClickListener {
             TimePickerFragment { _, hour, minute ->
                 setStartTime(LocalTime.of(hour, minute))
-            }.show(childFragmentManager, "Time Picker")
+            }.show(childFragmentManager, TAG_TIME_PICKER)
         }
 
         initPicker(binding.daysPicker, 0, 31)
