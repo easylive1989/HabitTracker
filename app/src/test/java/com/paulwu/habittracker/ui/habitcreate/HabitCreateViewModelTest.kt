@@ -7,11 +7,12 @@ import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import java.time.Duration
-import java.time.LocalDate
-import java.time.LocalTime
+import java.time.Instant
+import java.time.ZoneId
 
 @ExperimentalCoroutinesApi
 class HabitCreateViewModelTest {
@@ -19,22 +20,44 @@ class HabitCreateViewModelTest {
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
 
+    private lateinit var habitDao : HabitDao
+    private lateinit var viewModel : HabitCreateViewModel
+
+    @Before
+    fun setUp() {
+        habitDao = mockk(relaxed = true)
+        viewModel = HabitCreateViewModel(habitDao)
+    }
+
     @Test
-    fun `add habit to habit list`() {
+    fun `add habit should call db to insert`() {
         mainCoroutineRule.runBlockingTest {
-            val habitDao = mockk<HabitDao>(relaxed = true)
-
-            val viewModel  = HabitCreateViewModel(habitDao)
-
+            val instant = Instant.parse("2021-01-01T00:00:00Z")
             viewModel.habitSetting.name = "habit"
-            viewModel.habitSetting.date = LocalDate.of(2021, 1, 1)
-            viewModel.habitSetting.time = LocalTime.of(0,0,0)
+            viewModel.habitSetting.date = instant.atZone(ZoneId.systemDefault()).toLocalDate()
+            viewModel.habitSetting.time = instant.atZone(ZoneId.systemDefault()).toLocalTime()
             viewModel.habitSetting.frequency = Duration.ofMinutes(2)
             viewModel.habitSetting.targetCount = 20
 
             viewModel.add(viewModel.habitSetting)
 
-            verify { habitDao.insert(Habit(0, "habit", viewModel.habitSetting.startTime, Duration.ofMinutes(2), 20)) }
+            dbShouldInsert(
+                Habit(
+                    0,
+                    "habit",
+                    instant,
+                    Duration.ofMinutes(2),
+                    20
+                )
+            )
+        }
+    }
+
+    private fun dbShouldInsert(habit: Habit) {
+        verify {
+            habitDao.insert(
+                habit
+            )
         }
     }
 }

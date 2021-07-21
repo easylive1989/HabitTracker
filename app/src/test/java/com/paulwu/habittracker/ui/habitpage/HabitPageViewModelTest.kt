@@ -8,6 +8,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import java.time.Instant
@@ -18,17 +19,30 @@ class HabitPageViewModelTest {
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
 
+
+    private lateinit var habitDao : HabitDao
+    private lateinit var completeRecordDao : CompleteRecordDao
+    private lateinit var habitPageViewModel : HabitPageViewModel
+
+    @Before
+    fun setUp() {
+        habitDao = mockk(relaxed = true)
+        completeRecordDao = mockk(relaxed = true)
+        habitPageViewModel = HabitPageViewModel(habitDao, completeRecordDao)
+    }
+
+
     @Test
     fun `add complete times when user click complete button`() {
         mainCoroutineRule.runBlockingTest {
-            val habitDao = mockk<HabitDao>(relaxed = true)
-            val completeRecordDao = mockk<CompleteRecordDao>(relaxed = true)
-            val habitPageViewModel = HabitPageViewModel(habitDao, completeRecordDao)
-
             val instant = Instant.now()
             habitPageViewModel.complete(1, instant)
 
-            verify { completeRecordDao.insert(CompleteRecord(0, 1, instant)) }
+            dbShouldInsert(CompleteRecord(0, 1, instant))
         }
+    }
+
+    private fun dbShouldInsert(completeRecord: CompleteRecord) {
+        verify { completeRecordDao.insert(completeRecord) }
     }
 }
